@@ -1,0 +1,19 @@
+/*=========== Green - #64bd00 ============*/
+
+.btn-primary,.btn-primary:focus,.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled):active { background-color:#64bd00; color:#ffffff; }
+.btn-primary:hover { color:#ffffff; background-color:#64bd00; }
+.btn-primary:before,.contact .contact-form .btn-primary:hover { content:""; background-color:#427700; }
+
+::selection,.switcher-wrapper .switcher-trigger,.separator:after,.education-box:after,.experince-box:after,.education-box:hover:before, .experince-box:hover:before,.proggress,.grid li figure div,
+.carousel .carousel-indicators li,.carousel .carousel-control-next:hover,.carousel .carousel-control-prev:hover,.portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active,
+.portfolio .portfolio-wrap .portfolio-links a:hover,.contact .card-body:hover .card-icon i,.back-to-top:hover { background-color:#64bd00 !important; }
+
+a:hover:not(.btn),.btn-link,.navigation .navbar-nav .nav-item:hover .nav-link,.navigation .navbar-nav .nav-item .nav-link.active,.cd-headline.clip .cd-words-wrapper,.section-title h1 span,
+.banner-section .banner-text h3.headline b,.about-text h4 span,.counter-box h3,.service .card-icon,.testimonial-name,.meta-action .fa,.contact .card-body .card-icon i,
+.contact .card-body .social-links a:hover,.breadcrumb .breadcrumb-item.active,.not-found-page .animate-ziro { color:#64bd00 !important; }
+a.btn-link:hover { color:#666666 !important; }
+
+.education-box,.education-box:before,.experince-box,.experince-box:before,.blog .card .blog-card-img,.form-control:focus { border-color:#64bd00 !important; }
+.preloader-inner,.customers-testimonial .item { border-top-color:#64bd00 !important; }
+

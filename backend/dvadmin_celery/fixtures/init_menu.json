@@ -1,0 +1,62 @@
+[{
+    "name": "常规配置",
+    "icon": "cogs",
+    "sort": 2,
+    "is_link": false,
+    "is_catalog": true,
+    "web_path": "",
+    "component": "",
+    "component_name": "",
+    "status": true,
+    "cache": false,
+    "visible": true,
+    "parent": null,
+    "children": [{
+        "name": "定时任务",
+        "icon": "hourglass",
+        "sort": 4,
+        "is_link": false,
+        "is_catalog": false,
+        "web_path": "/timingTask",
+        "component": "plugins/dvadmin-celery-web/src/timingTask/index",
+        "component_name": "TimingTask",
+        "status": true,
+        "cache": false,
+        "visible": true,
+        "parent": 285,
+        "children": [],
+        "menu_button": [
+            {
+                "name": "查询",
+                "value": "Search",
+                "api": "/api/dvadmin_celery/task/job_list/",
+                "method": 0
+            },
+            {
+                "name": "详情",
+                "value": "Retrieve",
+                "api": "/api/dvadmin_celery/task/job_list/{id}/",
+                "method": 0
+            },
+            {
+                "name": "新增",
+                "value": "Create",
+                "api": "/api/dvadmin_celery/task/job_list/",
+                "method": 1
+            },
+            {
+                "name": "编辑",
+                "value": "Update",
+                "api": "/api/dvadmin_celery/task/job_list/{id}/",
+                "method": 2
+            },
+            {
+                "name": "删除",
+                "value": "Delete",
+                "api": "/api/system/menu/{id}/",
+                "method": 3
+            }
+        ]
+    }],
+    "menu_button": []
+}]

@@ -1,0 +1,126 @@
+version: "3"
+services:
+  dvadmin-web:
+    container_name: dvadmin-web
+    ports:
+      - "80:8080"
+      - "8080:8080"
+      - "8001:8001"
+    build:
+      context: ./
+      dockerfile: ./docker_env/web/Dockerfile
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./docker_env/nginx/1_easytool.icu_bundle.crt:/etc/nginx/1_easytool.icu_bundle.crt
+      - ./docker_env/nginx/2_easytool.icu.key:/etc/nginx/2_easytool.icu.key
+      - ./docker_env/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker_env/nginx/my.conf:/etc/nginx/conf.d/my.conf
+    expose:
+      - "8080"
+      - "8001"
+    networks:
+      network:
+        ipv4_address: 177.8.0.11
+
+  dvadmin-django:
+    build:
+      context: .
+      dockerfile: ./docker_env/django/Dockerfile
+    container_name: dvadmin-django
+    working_dir: /backend
+    # 打开mysql 时，打开此选项
+    depends_on:
+      - dvadmin-mysql
+    environment:
+      PYTHONUNBUFFERED: 1
+      DATABASE_HOST: dvadmin-mysql
+      TZ: Asia/Shanghai
+    volumes:
+      - ./backend:/backend
+      - ./logs/log:/var/log
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    restart: always
+    networks:
+      network:
+        ipv4_address: 177.8.0.12
+
+  dvadmin-mysql:
+    image: mysql:5.7
+    container_name: dvadmin-mysql
+    #使用该参数，container内的root拥有真正的root权限，否则，container内的root只是外部的一个普通用户权限
+    #设置为true，不然数据卷可能挂载不了，启动不起
+    privileged: true
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "poilkjmnb!@#"
+      MYSQL_DATABASE: "data_analysis_spider"
+      TZ: Asia/Shanghai
+    command:
+      --wait_timeout=31536000
+      --interactive_timeout=31536000
+      --max_connections=1000
+      --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./docker_env/mysql/data:/var/lib/mysql"
+      - "./docker_env/mysql/conf.d:/etc/mysql/conf.d"
+      - "./docker_env/mysql/logs:/logs"
+    networks:
+      network:
+        ipv4_address: 177.8.0.13
+
+
+  # 如果使用celery 插件，请自行打开此注释
+  dvadmin-celery:
+    build:
+      context: .
+      dockerfile: ./docker_env/celery/Dockerfile
+    # image: django:2.2
+    container_name: dvadmin-celery
+    working_dir: /backend
+    depends_on:
+      - dvadmin-mysql
+    environment:
+      PYTHONUNBUFFERED: 1
+      DATABASE_HOST: dvadmin-mysql
+      TZ: Asia/Shanghai
+    volumes:
+      - ./docker_env/celery/entrypoint.sh:/backend/entrypoint.sh
+#      - ./backend:/backend
+      - ./logs/log:/var/log
+    restart: always
+#    command: bash -c " celery -A application.celery worker -c 10 -P prefork -B --loglevel=info"
+    command:
+      - 'sh'
+      - '/backend/entrypoint.sh'
+    networks:
+      network:
+        ipv4_address: 177.8.0.14
+  dvadmin-redis:
+    image: redis:7.0.10
+    container_name: dvadmin-redis
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    volumes:
+      - ./docker_env/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    command: bash -c "redis-server /usr/local/etc/redis/redis.conf"
+    networks:
+      network:
+        ipv4_address: 177.8.0.15
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '177.8.0.0/26'
+
